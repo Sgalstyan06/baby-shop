@@ -5,6 +5,7 @@ import Home from "./components/home/Home";
 import Products from "./components/products/Products";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import LoginPage from "./components/login/LoginPage";
+import Dashboard from "./components/dashboard/Dashboard";
 
 function App(slides) {
   return (
@@ -14,6 +15,7 @@ function App(slides) {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={ <Products/> } />
+          <Route path="/dashboard" element={ <Dashboard/> } />
           <Route path="/login" element={ <LoginPage />} />
         </Routes>
         <Footer />

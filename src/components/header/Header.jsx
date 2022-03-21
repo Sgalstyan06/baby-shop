@@ -1,8 +1,9 @@
 import React from "react";
 import { createMedia } from "@artsy/fresnel";
-import { Icon, Image, Menu, Sidebar } from "semantic-ui-react";
+import { Icon, Image, Menu, Sidebar,Dropdown } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+
 
 
  const AppMedia = createMedia({
@@ -49,11 +50,16 @@ const NavBarMobile = (props) => {
           <Menu.Item onClick={onToggle}>
             <Icon name="sidebar" />
           </Menu.Item>
-          <Menu.Menu position="right">
-            {rightItems.map((item, index) => (
-              <Menu.Item key = {index} {...item} />
-            ))}
-          </Menu.Menu>
+          <Menu.Menu position="right" key="rightItems">
+                {rightItems.map((item, index) => {
+                if (item.children) {
+                    return (
+                    <Menu.Item key={`rightParams${index}`}>{item.children}</Menu.Item>
+                    );
+                }
+                return <Menu.Item key={index} {...item.link} />;
+                })}
+            </Menu.Menu>
         </Menu>
         {children}
       </Sidebar.Pusher>
@@ -73,12 +79,17 @@ const NavBarDesktop = (props) => {
       {leftItems.map((item) => (
         <Menu.Item {...item} />
       ))}
-
-      <Menu.Menu position="right">
-        {rightItems.map((item) => (
-          <Menu.Item {...item} />
-        ))}
-      </Menu.Menu>
+      
+      <Menu.Menu position="right" key="rightItems">
+                {rightItems.map((item, index) => {
+                if (item.children) {
+                    return (
+                    <Menu.Item key={`rightParams${index}`}>{item.children}</Menu.Item>
+                    );
+                }
+                return <Menu.Item key={index} {...item.link} />;
+                })}
+            </Menu.Menu>
     </Menu>
   );
 };
@@ -134,18 +145,31 @@ const rightItems = [
 ];
 
 function Header() {
-  const {user, isAuthenticated} = useAuth0();
+  const {user, isAuthenticated,logout} = useAuth0();
   console.log(user);
   console.log(isAuthenticated);
 
   rightItems.length = 0;
   if(isAuthenticated){
-    rightItems.push ({ as: Link, to: "/login", content: "Log Out", key: "login" })
-    // rightItems.push(`<div>user.name</div>`,
-    //   `<button onClick={()=> logout()}>Logout<button></button>`);
+    // rightItems.push ({ as: Link, to: "/login", content: "Log Out", key: "login" })
+    rightItems.push({
+      children: [
+        <Image avatar spaced="right" src={user.picture} />,
+        <Dropdown pointing="top left" text="Username" key="userDropdown">
+          <Dropdown.Menu key="userDropdownMenu">
+            <Dropdown.Item text={user.name} key={user.name} />
+            <Dropdown.Item as={Link} to="/dashboard" text="Dashboard" key="userDashboard" />
+            <Dropdown.Item onClick={logout} text="Sign out" icon="power" key="userSignout"/>
+          </Dropdown.Menu>
+        </Dropdown>
+      ],
+    });
   }
       else {
-       rightItems.push ({ as: Link, to: "/login", content: "Login", key: "login" });
+      //  rightItems.push (Link:{ as: Link, to: "/login", content: "Login", key: "login" });
+      rightItems.push({
+        link: { as: Link, to: "/login", content: "Login", key: "login" },
+      });
      }
 
     return (
