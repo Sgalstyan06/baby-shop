@@ -6,10 +6,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Home = () => {
     const {user, isAuthenticated} = useAuth0();
-console.log(user);
-console.log(isAuthenticated);
+
     return (
-        <div className="home">
+        <div className="home main">
             <Slides />
            <Cards />
         </div>

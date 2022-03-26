@@ -1,8 +1,9 @@
 import React from "react";
 import { createMedia } from "@artsy/fresnel";
 import { Icon, Image, Menu, Sidebar,Dropdown } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link,Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import "./Header.css";
 
 
 
@@ -41,7 +42,7 @@ const NavBarMobile = (props) => {
       <Sidebar.Pusher
         dimmed={visible}
         onClick={onPusherClick}
-        style={{ minHeight: "15vh" }}
+        // style={{ minHeight: "15vh" }}
       >
         <Menu fixed="top" inverted>
           <Menu.Item>
@@ -113,7 +114,7 @@ class NavBar extends React.Component {
     const { visible } = this.state;
 
     return (
-      <div>
+      <div className="customHeader">
         <Media at="mobile">
           <NavBarMobile
             leftItems={leftItems}
@@ -122,7 +123,6 @@ class NavBar extends React.Component {
             rightItems={rightItems}
             visible={visible}
           >
-
           </NavBarMobile>
         </Media>
 
@@ -137,12 +137,10 @@ class NavBar extends React.Component {
 const leftItems = [
   { as: Link, to: "/", content: "Home", key: "home" },
   { as: Link, to: "/products", content: "Products", key: "products" },
-  { as: Link, to: "/review", content: "Review", key: "review" },
+  // { as: Link, to: "/review", content: "Review", key: "review" },
 ];
 
-const rightItems = [
-  
-];
+const rightItems = [];
 
 function Header() {
   const {user, isAuthenticated,logout} = useAuth0();

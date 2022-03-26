@@ -1,0 +1,7 @@
+.ui.fixed.menu.top{
+    background-color: rgb(64, 125, 238);
+}
+
+.customHeader, .pusher{
+    height: 60px;
+}
