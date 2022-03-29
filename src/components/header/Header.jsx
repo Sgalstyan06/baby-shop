@@ -4,6 +4,7 @@ import { Icon, Image, Menu, Sidebar,Dropdown } from "semantic-ui-react";
 import { Link,Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./Header.css";
+import { nanoid } from "nanoid";
 
 
 
@@ -38,6 +39,7 @@ const NavBarMobile = (props) => {
         items={leftItems}
         vertical
         visible={visible}
+        key={nanoid()}
       />
       <Sidebar.Pusher
         dimmed={visible}
@@ -45,10 +47,10 @@ const NavBarMobile = (props) => {
         // style={{ minHeight: "15vh" }}
       >
         <Menu fixed="top" inverted>
-          <Menu.Item>
-            <Image size="mini" src="https://react.semantic-ui.com/logo.png" />
+          <Menu.Item key={nanoid()}>
+            <Image size="mini" src="https://react.semantic-ui.com/logo.png"  />
           </Menu.Item>
-          <Menu.Item onClick={onToggle}>
+          <Menu.Item onClick={onToggle} key={nanoid()}>
             <Icon name="sidebar" />
           </Menu.Item>
           <Menu.Menu position="right" key="rightItems">
@@ -73,12 +75,12 @@ const NavBarDesktop = (props) => {
 
   return (
     <Menu fixed="top" inverted>
-      <Menu.Item>
+      <Menu.Item key={nanoid()}>
         <Image size="mini" src="https://react.semantic-ui.com/logo.png" />
       </Menu.Item>
 
-      {leftItems.map((item) => (
-        <Menu.Item {...item} />
+      {leftItems.map((item,index) => (
+        <Menu.Item {...item} key = {index}/>
       ))}
       
       <Menu.Menu position="right" key="rightItems">
@@ -152,7 +154,7 @@ function Header() {
     // rightItems.push ({ as: Link, to: "/login", content: "Log Out", key: "login" })
     rightItems.push({
       children: [
-        <Image avatar spaced="right" src={user.picture} />,
+        <Image avatar spaced="right" src={user.picture} key={nanoid()} />,
         <Dropdown pointing="top left" text="Username" key="userDropdown">
           <Dropdown.Menu key="userDropdownMenu">
             <Dropdown.Item text={user.name} key={user.name} />
