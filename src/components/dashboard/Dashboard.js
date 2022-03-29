@@ -9,10 +9,10 @@ function Dashboard() {
         const token = await getAccessTokenSilently();
         const data = await getOrders(user.sub,token);
         if(data && Array.isArray(data)){
-            console.log("data",data);
+            
         }else if(data && data.status === 401){
             const authorised = await authoriseUser(user,token);
-            console.log("authorised",authorised)
+            
         }else {
             console.log("hajox");
         }

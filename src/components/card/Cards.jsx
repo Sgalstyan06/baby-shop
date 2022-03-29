@@ -15,9 +15,10 @@ const Cards = () => {
   return (
     <div className="ui stackable three column grid">
       {result.map((item) => {
-        console.log(item);
+        
         return (
           <CardItem
+          item={item}
             key={item.id}
             description={item?.description.comment || ""}
             image={item.image}

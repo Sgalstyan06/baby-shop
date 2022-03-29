@@ -155,7 +155,7 @@ function Header() {
     rightItems.push({
       children: [
         <Image avatar spaced="right" src={user.picture} key={nanoid()} />,
-        <Dropdown pointing="top left" text="Username" key="userDropdown">
+        <Dropdown pointing="top left" text={user.name} key="userDropdown">
           <Dropdown.Menu key="userDropdownMenu">
             <Dropdown.Item text={user.name} key={user.name} />
             <Dropdown.Item as={Link} to="/dashboard" text="Dashboard" key="userDashboard" />

@@ -1,15 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Header, Image, Modal, Segment } from "semantic-ui-react";
 import BuyForm from "./buyForm";
 import "./BuyProduct.css";
+import { confirmOrder } from "../../services/api";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function BuyProduct({ user, productInfo }) {
+function BuyProduct({ productInfo, item }) {
+  const { error, isAuthenticated, isLoading, user, getAccessTokenSilently } =
+    useAuth0();
+
   const { description, image, name, price } = productInfo;
-  const { userName, id } = user;
-  const [open, setOpen] = React.useState(false);
-  console.log("productInfo", productInfo, "user", user);
-  function confirmAction(){
-      
+
+  const [open, setOpen] = useState(false);
+  const inintFormData = { address: "", phone: "", paymentMethod: "cash" };
+  const [options, setOptions] = useState(inintFormData);
+
+  async function confirmAction() {
+    try {
+      const token = await getAccessTokenSilently();
+      console.log("options",options);
+      debugger;
+      const userObj = {
+        id: user.sub,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+      };
+      const orderStatus = await confirmOrder(userObj, item, token, options);
+      console.log(orderStatus);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function changeOptions(prop) {
+    console.log("prop",prop);
+    setOptions({ ...options, ...prop });
   }
 
   return (
@@ -38,11 +63,11 @@ function BuyProduct({ user, productInfo }) {
           <p>{description}</p>
           <p>{price + "$"}</p>
         </Modal.Description>
-        <BuyForm userName={userName} id={id} />
+
+        <BuyForm userName={user.name} changeOptions={changeOptions} />
       </Modal.Content>
       <Modal.Actions>
         <Segment>
-          
           <Segment.Inline>
             <Button color="black" onClick={() => setOpen(false)}>
               Nope
@@ -52,9 +77,9 @@ function BuyProduct({ user, productInfo }) {
               labelPosition="right"
               icon="checkmark"
               onClick={() => {
-                  setOpen(false);
-                  confirmAction()
-                }}
+                setOpen(false);
+                confirmAction();
+              }}
               positive
             />
           </Segment.Inline>
